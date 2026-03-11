@@ -1,0 +1,1 @@
+ E:\\Project\\warungpakwardi-folder\\warungpakwardi\\.dart_tool\\flutter_build\\8b76d2e0c725e6e33e7121b415e749f4\\native_assets.json: 
