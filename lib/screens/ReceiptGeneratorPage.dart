@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:screenshot/screenshot.dart';
@@ -27,7 +26,7 @@ class _ReceiptGeneratorWidgetState extends State<ReceiptGeneratorWidget> {
 
       await Share.shareXFiles([
         XFile(imagePath.path),
-      ], text: 'Struk Transaksi dari Warung Pak Wardi');
+      ], subject: 'Struk Transaksi dari Warung Pak Wardi');
     }
   }
 

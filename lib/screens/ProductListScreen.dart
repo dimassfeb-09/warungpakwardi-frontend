@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:warungpakwardi/constant/color.dart';
 import 'package:warungpakwardi/models/Product.dart';
 import 'package:warungpakwardi/widgets/TextFieldCustom.dart';
-import 'package:warungpakwardi/widgets/product/CardProduct.dart';
 import 'package:warungpakwardi/widgets/product/ProductList.dart';
 
 import '../blocs/product/bloc/product_bloc.dart';

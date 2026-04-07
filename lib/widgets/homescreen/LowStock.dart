@@ -37,8 +37,8 @@ class LowStock extends StatelessWidget {
                 itemBuilder: (context, index) {
                   final product = products[index];
                   return LowStockCard(
-                    name: product.name ?? '-',
-                    stock: product.stock ?? 0,
+                    name: product.name,
+                    stock: product.stock,
                     onTap: () async {
                       final newUpdated = await Navigator.pushNamed(
                         context,

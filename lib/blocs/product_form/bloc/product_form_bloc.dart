@@ -1,5 +1,4 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:uuid/uuid.dart';
 import '../../../db/remote/product_repository.dart';
 import '../../../models/Product.dart';
 import '../../../utils/secureStorage.dart';

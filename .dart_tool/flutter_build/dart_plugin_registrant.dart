@@ -6,22 +6,22 @@
 // @dart = 3.7
 
 import 'dart:io'; // flutter_ignore: dart_io_import.
-import 'package:path_provider_android/path_provider_android.dart';
-import 'package:shared_preferences_android/shared_preferences_android.dart';
-import 'package:path_provider_foundation/path_provider_foundation.dart';
-import 'package:shared_preferences_foundation/shared_preferences_foundation.dart';
-import 'package:connectivity_plus/connectivity_plus.dart';
-import 'package:path_provider_linux/path_provider_linux.dart';
-import 'package:share_plus/share_plus.dart';
-import 'package:shared_preferences_linux/shared_preferences_linux.dart';
-import 'package:url_launcher_linux/url_launcher_linux.dart';
-import 'package:path_provider_foundation/path_provider_foundation.dart';
-import 'package:shared_preferences_foundation/shared_preferences_foundation.dart';
-import 'package:flutter_secure_storage_windows/flutter_secure_storage_windows.dart';
-import 'package:path_provider_windows/path_provider_windows.dart';
-import 'package:share_plus/share_plus.dart';
-import 'package:shared_preferences_windows/shared_preferences_windows.dart';
-import 'package:url_launcher_windows/url_launcher_windows.dart';
+import 'package:path_provider_android/path_provider_android.dart' as path_provider_android;
+import 'package:shared_preferences_android/shared_preferences_android.dart' as shared_preferences_android;
+import 'package:path_provider_foundation/path_provider_foundation.dart' as path_provider_foundation;
+import 'package:shared_preferences_foundation/shared_preferences_foundation.dart' as shared_preferences_foundation;
+import 'package:connectivity_plus/connectivity_plus.dart' as connectivity_plus;
+import 'package:path_provider_linux/path_provider_linux.dart' as path_provider_linux;
+import 'package:share_plus/share_plus.dart' as share_plus;
+import 'package:shared_preferences_linux/shared_preferences_linux.dart' as shared_preferences_linux;
+import 'package:url_launcher_linux/url_launcher_linux.dart' as url_launcher_linux;
+import 'package:path_provider_foundation/path_provider_foundation.dart' as path_provider_foundation;
+import 'package:shared_preferences_foundation/shared_preferences_foundation.dart' as shared_preferences_foundation;
+import 'package:flutter_secure_storage_windows/flutter_secure_storage_windows.dart' as flutter_secure_storage_windows;
+import 'package:path_provider_windows/path_provider_windows.dart' as path_provider_windows;
+import 'package:share_plus/share_plus.dart' as share_plus;
+import 'package:shared_preferences_windows/shared_preferences_windows.dart' as shared_preferences_windows;
+import 'package:url_launcher_windows/url_launcher_windows.dart' as url_launcher_windows;
 
 @pragma('vm:entry-point')
 class _PluginRegistrant {
@@ -30,7 +30,7 @@ class _PluginRegistrant {
   static void register() {
     if (Platform.isAndroid) {
       try {
-        PathProviderAndroid.registerWith();
+        path_provider_android.PathProviderAndroid.registerWith();
       } catch (err) {
         print(
           '`path_provider_android` threw an error: $err. '
@@ -39,7 +39,7 @@ class _PluginRegistrant {
       }
 
       try {
-        SharedPreferencesAndroid.registerWith();
+        shared_preferences_android.SharedPreferencesAndroid.registerWith();
       } catch (err) {
         print(
           '`shared_preferences_android` threw an error: $err. '
@@ -49,7 +49,7 @@ class _PluginRegistrant {
 
     } else if (Platform.isIOS) {
       try {
-        PathProviderFoundation.registerWith();
+        path_provider_foundation.PathProviderFoundation.registerWith();
       } catch (err) {
         print(
           '`path_provider_foundation` threw an error: $err. '
@@ -58,7 +58,7 @@ class _PluginRegistrant {
       }
 
       try {
-        SharedPreferencesFoundation.registerWith();
+        shared_preferences_foundation.SharedPreferencesFoundation.registerWith();
       } catch (err) {
         print(
           '`shared_preferences_foundation` threw an error: $err. '
@@ -68,7 +68,7 @@ class _PluginRegistrant {
 
     } else if (Platform.isLinux) {
       try {
-        ConnectivityPlusLinuxPlugin.registerWith();
+        connectivity_plus.ConnectivityPlusLinuxPlugin.registerWith();
       } catch (err) {
         print(
           '`connectivity_plus` threw an error: $err. '
@@ -77,7 +77,7 @@ class _PluginRegistrant {
       }
 
       try {
-        PathProviderLinux.registerWith();
+        path_provider_linux.PathProviderLinux.registerWith();
       } catch (err) {
         print(
           '`path_provider_linux` threw an error: $err. '
@@ -86,7 +86,7 @@ class _PluginRegistrant {
       }
 
       try {
-        SharePlusLinuxPlugin.registerWith();
+        share_plus.SharePlusLinuxPlugin.registerWith();
       } catch (err) {
         print(
           '`share_plus` threw an error: $err. '
@@ -95,7 +95,7 @@ class _PluginRegistrant {
       }
 
       try {
-        SharedPreferencesLinux.registerWith();
+        shared_preferences_linux.SharedPreferencesLinux.registerWith();
       } catch (err) {
         print(
           '`shared_preferences_linux` threw an error: $err. '
@@ -104,7 +104,7 @@ class _PluginRegistrant {
       }
 
       try {
-        UrlLauncherLinux.registerWith();
+        url_launcher_linux.UrlLauncherLinux.registerWith();
       } catch (err) {
         print(
           '`url_launcher_linux` threw an error: $err. '
@@ -114,7 +114,7 @@ class _PluginRegistrant {
 
     } else if (Platform.isMacOS) {
       try {
-        PathProviderFoundation.registerWith();
+        path_provider_foundation.PathProviderFoundation.registerWith();
       } catch (err) {
         print(
           '`path_provider_foundation` threw an error: $err. '
@@ -123,7 +123,7 @@ class _PluginRegistrant {
       }
 
       try {
-        SharedPreferencesFoundation.registerWith();
+        shared_preferences_foundation.SharedPreferencesFoundation.registerWith();
       } catch (err) {
         print(
           '`shared_preferences_foundation` threw an error: $err. '
@@ -133,7 +133,7 @@ class _PluginRegistrant {
 
     } else if (Platform.isWindows) {
       try {
-        FlutterSecureStorageWindows.registerWith();
+        flutter_secure_storage_windows.FlutterSecureStorageWindows.registerWith();
       } catch (err) {
         print(
           '`flutter_secure_storage_windows` threw an error: $err. '
@@ -142,7 +142,7 @@ class _PluginRegistrant {
       }
 
       try {
-        PathProviderWindows.registerWith();
+        path_provider_windows.PathProviderWindows.registerWith();
       } catch (err) {
         print(
           '`path_provider_windows` threw an error: $err. '
@@ -151,7 +151,7 @@ class _PluginRegistrant {
       }
 
       try {
-        SharePlusWindowsPlugin.registerWith();
+        share_plus.SharePlusWindowsPlugin.registerWith();
       } catch (err) {
         print(
           '`share_plus` threw an error: $err. '
@@ -160,7 +160,7 @@ class _PluginRegistrant {
       }
 
       try {
-        SharedPreferencesWindows.registerWith();
+        shared_preferences_windows.SharedPreferencesWindows.registerWith();
       } catch (err) {
         print(
           '`shared_preferences_windows` threw an error: $err. '
@@ -169,7 +169,7 @@ class _PluginRegistrant {
       }
 
       try {
-        UrlLauncherWindows.registerWith();
+        url_launcher_windows.UrlLauncherWindows.registerWith();
       } catch (err) {
         print(
           '`url_launcher_windows` threw an error: $err. '

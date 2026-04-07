@@ -22,7 +22,7 @@ class TransactionAddState extends Equatable {
 
   double get totalPrice => items.fold(
     0,
-    (sum, item) => sum + ((item.product.price ?? 0) * item.quantity),
+    (sum, item) => sum + ((item.product.price) * item.quantity),
   );
 
   @override

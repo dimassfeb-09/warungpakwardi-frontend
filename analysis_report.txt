@@ -1,0 +1,106 @@
+Analyzing warungpakwardi...                                     
+
+   info - The imported package 'bloc' isn't a dependency of the importing package - lib\blocs\home\bloc\home_bloc.dart:1:8 - depend_on_referenced_packages
+   info - The imported package 'bloc' isn't a dependency of the importing package - lib\blocs\login\bloc\login_bloc.dart:1:8 - depend_on_referenced_packages
+   info - Don't invoke 'print' in production code - lib\blocs\login\bloc\login_bloc.dart:35:7 - avoid_print
+   info - The imported package 'bloc' isn't a dependency of the importing package - lib\blocs\product\bloc\product_bloc.dart:1:8 - depend_on_referenced_packages
+   info - Constructors in '@immutable' classes should be declared as 'const' - lib\blocs\product\bloc\product_state.dart:7:3 - prefer_const_constructors_in_immutables
+   info - Parameter 'products' could be a super parameter - lib\blocs\product\bloc\product_state.dart:19:3 - use_super_parameters
+   info - Parameter 'products' could be a super parameter - lib\blocs\product\bloc\product_state.dart:30:3 - use_super_parameters
+warning - Unused import: 'package:uuid/uuid.dart' - lib\blocs\product_form\bloc\product_form_bloc.dart:2:8 - unused_import
+   info - The imported package 'bloc' isn't a dependency of the importing package - lib\blocs\register\register_bloc.dart:1:8 - depend_on_referenced_packages
+   info - The imported package 'bloc' isn't a dependency of the importing package - lib\blocs\report\bloc\report_bloc.dart:1:8 - depend_on_referenced_packages
+   info - Constructors in '@immutable' classes should be declared as 'const' - lib\blocs\report\bloc\report_state.dart:17:3 - prefer_const_constructors_in_immutables
+   info - Constructors in '@immutable' classes should be declared as 'const' - lib\blocs\report\bloc\report_state.dart:23:3 - prefer_const_constructors_in_immutables
+   info - The imported package 'bloc' isn't a dependency of the importing package - lib\blocs\transaction\bloc\transaction_bloc.dart:1:8 - depend_on_referenced_packages
+   info - Don't invoke 'print' in production code - lib\blocs\transaction\bloc\transaction_bloc.dart:25:9 - avoid_print
+warning - The left operand can't be null, so the right operand is never executed - lib\blocs\transaction_add\bloc\transaction_add_state.dart:25:50 - dead_null_aware_expression
+   info - The imported package 'bloc' isn't a dependency of the importing package - lib\blocs\transaction_detail\bloc\transaction_detail_bloc.dart:1:8 - depend_on_referenced_packages
+   info - Don't invoke 'print' in production code - lib\db\remote\dashboard_repository.dart:31:9 - avoid_print
+   info - Don't invoke 'print' in production code - lib\db\remote\dashboard_repository.dart:35:7 - avoid_print
+   info - Don't invoke 'print' in production code - lib\db\remote\product_repository.dart:38:7 - avoid_print
+   info - Don't invoke 'print' in production code - lib\db\remote\product_repository.dart:40:9 - avoid_print
+   info - Don't invoke 'print' in production code - lib\db\remote\product_repository.dart:77:9 - avoid_print
+   info - Don't invoke 'print' in production code - lib\db\remote\product_repository.dart:114:7 - avoid_print
+   info - Don't invoke 'print' in production code - lib\db\remote\product_repository.dart:143:9 - avoid_print
+   info - Don't invoke 'print' in production code - lib\db\remote\report_repository.dart:36:7 - avoid_print
+   info - Don't invoke 'print' in production code - lib\db\remote\report_repository.dart:38:9 - avoid_print
+   info - The file name 'formatDate.dart' isn't a lower_case_with_underscores identifier - lib\helper\formatDate.dart:1:1 - file_names
+   info - The file name 'generatePdfReceipt.dart' isn't a lower_case_with_underscores identifier - lib\helper\generatePdfReceipt.dart:1:1 - file_names
+   info - Don't invoke 'print' in production code - lib\helper\generatePdfReceipt.dart:115:3 - avoid_print
+   info - The file name 'groupTransactionHistory.dart' isn't a lower_case_with_underscores identifier - lib\helper\groupTransactionHistory.dart:1:1 - file_names
+   info - The file name 'isConnectedToInternet.dart' isn't a lower_case_with_underscores identifier - lib\helper\isConnectedToInternet.dart:1:1 - file_names
+warning - Unused import: 'package:connectivity_plus/connectivity_plus.dart' - lib\helper\isConnectedToInternet.dart:1:8 - unused_import
+   info - The file name 'toIDR.dart' isn't a lower_case_with_underscores identifier - lib\helper\toIDR.dart:1:1 - file_names
+   info - The file name 'CreateTransaction.dart' isn't a lower_case_with_underscores identifier - lib\models\CreateTransaction.dart:1:1 - file_names
+   info - The file name 'Dashboard.dart' isn't a lower_case_with_underscores identifier - lib\models\Dashboard.dart:1:1 - file_names
+   info - The file name 'Login.dart' isn't a lower_case_with_underscores identifier - lib\models\Login.dart:1:1 - file_names
+   info - The file name 'Product.dart' isn't a lower_case_with_underscores identifier - lib\models\Product.dart:1:1 - file_names
+   info - The file name 'Register.dart' isn't a lower_case_with_underscores identifier - lib\models\Register.dart:1:1 - file_names
+   info - The file name 'ResponseAPI.dart' isn't a lower_case_with_underscores identifier - lib\models\ResponseAPI.dart:1:1 - file_names
+   info - The file name 'ResponseErrorAPI.dart' isn't a lower_case_with_underscores identifier - lib\models\ResponseErrorAPI.dart:1:1 - file_names
+   info - The file name 'Transaction.dart' isn't a lower_case_with_underscores identifier - lib\models\Transaction.dart:1:1 - file_names
+   info - The file name 'TransactionDetail.dart' isn't a lower_case_with_underscores identifier - lib\models\TransactionDetail.dart:1:1 - file_names
+   info - The file name 'TransactionItem.dart' isn't a lower_case_with_underscores identifier - lib\models\TransactionItem.dart:1:1 - file_names
+   info - The file name 'TransactionReport.dart' isn't a lower_case_with_underscores identifier - lib\models\TransactionReport.dart:1:1 - file_names
+   info - The file name 'User.dart' isn't a lower_case_with_underscores identifier - lib\models\User.dart:1:1 - file_names
+   info - The file name 'HomeScreen.dart' isn't a lower_case_with_underscores identifier - lib\screens\HomeScreen.dart:1:1 - file_names
+   info - Constructors in '@immutable' classes should be declared as 'const' - lib\screens\HomeScreen.dart:12:3 - prefer_const_constructors_in_immutables
+   info - Don't use 'BuildContext's across async gaps - lib\screens\HomeScreen.dart:28:17 - use_build_context_synchronously
+   info - Don't use 'BuildContext's across async gaps - lib\screens\HomeScreen.dart:38:11 - use_build_context_synchronously
+   info - The file name 'LoginScreen.dart' isn't a lower_case_with_underscores identifier - lib\screens\LoginScreen.dart:1:1 - file_names
+   info - The file name 'ProductAddScreen.dart' isn't a lower_case_with_underscores identifier - lib\screens\ProductAddScreen.dart:1:1 - file_names
+   info - The file name 'ProductEditScreen.dart' isn't a lower_case_with_underscores identifier - lib\screens\ProductEditScreen.dart:1:1 - file_names
+   info - The file name 'ProductListScreen.dart' isn't a lower_case_with_underscores identifier - lib\screens\ProductListScreen.dart:1:1 - file_names
+warning - Unused import: 'package:warungpakwardi/widgets/product/CardProduct.dart' - lib\screens\ProductListScreen.dart:6:8 - unused_import
+   info - Don't use 'BuildContext's across async gaps - lib\screens\ProductListScreen.dart:36:17 - use_build_context_synchronously
+   info - The file name 'ReceiptGeneratorPage.dart' isn't a lower_case_with_underscores identifier - lib\screens\ReceiptGeneratorPage.dart:1:1 - file_names
+warning - Unused import: 'dart:typed_data' - lib\screens\ReceiptGeneratorPage.dart:2:8 - unused_import
+   info - 'Share' is deprecated and shouldn't be used. Use SharePlus instead - lib\screens\ReceiptGeneratorPage.dart:28:13 - deprecated_member_use
+   info - 'shareXFiles' is deprecated and shouldn't be used. Use SharePlus.instance.share() instead - lib\screens\ReceiptGeneratorPage.dart:28:19 - deprecated_member_use
+   info - The file name 'RegisterScreen.dart' isn't a lower_case_with_underscores identifier - lib\screens\RegisterScreen.dart:1:1 - file_names
+   info - The file name 'ReportScreen.dart' isn't a lower_case_with_underscores identifier - lib\screens\ReportScreen.dart:1:1 - file_names
+   info - The file name 'SplashScreen.dart' isn't a lower_case_with_underscores identifier - lib\screens\SplashScreen.dart:1:1 - file_names
+   info - The file name 'TransactionAddScreen.dart' isn't a lower_case_with_underscores identifier - lib\screens\TransactionAddScreen.dart:1:1 - file_names
+warning - The left operand can't be null, so the right operand is never executed - lib\screens\TransactionAddScreen.dart:19:56 - dead_null_aware_expression
+   info - Unnecessary use of string interpolation - lib\screens\TransactionAddScreen.dart:73:32 - unnecessary_string_interpolations
+   info - Unnecessary use of multiple underscores - lib\screens\TransactionAddScreen.dart:145:37 - unnecessary_underscores
+warning - The left operand can't be null, so the right operand is never executed - lib\screens\TransactionAddScreen.dart:149:58 - dead_null_aware_expression
+warning - The left operand can't be null, so the right operand is never executed - lib\screens\TransactionAddScreen.dart:171:64 - dead_null_aware_expression
+warning - The left operand can't be null, so the right operand is never executed - lib\screens\TransactionAddScreen.dart:201:94 - dead_null_aware_expression
+   info - The file name 'TransactionDetailScreen.dart' isn't a lower_case_with_underscores identifier - lib\screens\TransactionDetailScreen.dart:1:1 - file_names
+warning - Unused import: 'package:warungpakwardi/helper/generatePdfReceipt.dart' - lib\screens\TransactionDetailScreen.dart:10:8 - unused_import
+warning - Unused import: 'package:warungpakwardi/models/User.dart' - lib\screens\TransactionDetailScreen.dart:12:8 - unused_import
+warning - Unused import: 'package:warungpakwardi/screens/ReceiptGeneratorPage.dart' - lib\screens\TransactionDetailScreen.dart:13:8 - unused_import
+   info - The local variable '_screenshotController' starts with an underscore - lib\screens\TransactionDetailScreen.dart:24:32 - no_leading_underscores_for_local_identifiers
+   info - The local variable '_captureAndShare' starts with an underscore - lib\screens\TransactionDetailScreen.dart:26:18 - no_leading_underscores_for_local_identifiers
+   info - 'Share' is deprecated and shouldn't be used. Use SharePlus instead - lib\screens\TransactionDetailScreen.dart:33:15 - deprecated_member_use
+   info - 'shareXFiles' is deprecated and shouldn't be used. Use SharePlus.instance.share() instead - lib\screens\TransactionDetailScreen.dart:33:21 - deprecated_member_use
+   info - The file name 'TransactionListScreen.dart' isn't a lower_case_with_underscores identifier - lib\screens\TransactionListScreen.dart:1:1 - file_names
+   info - Unnecessary use of 'toList' in a spread - lib\screens\TransactionListScreen.dart:190:30 - unnecessary_to_list_in_spreads
+   info - The file name 'secureStorage.dart' isn't a lower_case_with_underscores identifier - lib\utils\secureStorage.dart:1:1 - file_names
+   info - 'encryptedSharedPreferences' is deprecated and shouldn't be used. EncryptedSharedPreferences is deprecated and will be removed in v11. The Jetpack Security library is deprecated by Google. Your data will be automatically migrated to custom ciphers on first access. Remove this parameter - it will be ignored - lib\utils\secureStorage.dart:4:28 - deprecated_member_use
+   info - The file name 'ButtonCustom.dart' isn't a lower_case_with_underscores identifier - lib\widgets\ButtonCustom.dart:1:1 - file_names
+   info - The file name 'SelectItemCustom.dart' isn't a lower_case_with_underscores identifier - lib\widgets\SelectItemCustom.dart:1:1 - file_names
+   info - The file name 'SnacbarCustom.dart' isn't a lower_case_with_underscores identifier - lib\widgets\SnacbarCustom.dart:1:1 - file_names
+   info - The file name 'TextButtonCustom.dart' isn't a lower_case_with_underscores identifier - lib\widgets\TextButtonCustom.dart:1:1 - file_names
+   info - The file name 'TextFieldCustom.dart' isn't a lower_case_with_underscores identifier - lib\widgets\TextFieldCustom.dart:1:1 - file_names
+   info - The file name 'AppBarTitleDashboard.dart' isn't a lower_case_with_underscores identifier - lib\widgets\homescreen\AppBarTitleDashboard.dart:1:1 - file_names
+   info - The file name 'DashboardHero.dart' isn't a lower_case_with_underscores identifier - lib\widgets\homescreen\DashboardHero.dart:1:1 - file_names
+   info - Constructors in '@immutable' classes should be declared as 'const' - lib\widgets\homescreen\DashboardHero.dart:8:3 - prefer_const_constructors_in_immutables
+   info - The file name 'DataCard.dart' isn't a lower_case_with_underscores identifier - lib\widgets\homescreen\DataCard.dart:1:1 - file_names
+   info - The file name 'LowStock.dart' isn't a lower_case_with_underscores identifier - lib\widgets\homescreen\LowStock.dart:1:1 - file_names
+warning - The left operand can't be null, so the right operand is never executed - lib\widgets\homescreen\LowStock.dart:40:43 - dead_null_aware_expression
+warning - The left operand can't be null, so the right operand is never executed - lib\widgets\homescreen\LowStock.dart:41:45 - dead_null_aware_expression
+   info - Don't use 'BuildContext's across async gaps - lib\widgets\homescreen\LowStock.dart:50:25 - use_build_context_synchronously
+   info - The file name 'LowStockCard.dart' isn't a lower_case_with_underscores identifier - lib\widgets\homescreen\LowStockCard.dart:1:1 - file_names
+   info - The file name 'QuickMenu.dart' isn't a lower_case_with_underscores identifier - lib\widgets\homescreen\QuickMenu.dart:1:1 - file_names
+   info - The file name 'QuickMenuCard.dart' isn't a lower_case_with_underscores identifier - lib\widgets\homescreen\QuickMenuCard.dart:1:1 - file_names
+   info - The file name 'CardProduct.dart' isn't a lower_case_with_underscores identifier - lib\widgets\product\CardProduct.dart:1:1 - file_names
+   info - The import of 'dart:ui' is unnecessary because all of the used elements are also provided by the import of 'package:flutter/material.dart' - lib\widgets\product\CardProduct.dart:1:8 - unnecessary_import
+warning - The '!' will have no effect because the receiver can't be null - lib\widgets\product\CardProduct.dart:33:25 - unnecessary_non_null_assertion
+   info - The file name 'ProductList.dart' isn't a lower_case_with_underscores identifier - lib\widgets\product\ProductList.dart:1:1 - file_names
+   info - Don't use 'BuildContext's across async gaps - lib\widgets\product\ProductList.dart:33:21 - use_build_context_synchronously
+warning - The '!' will have no effect because the receiver can't be null - lib\widgets\product\ProductList.dart:40:69 - unnecessary_non_null_assertion
+warning - The dev dependency on flutter_launcher_icons is unnecessary because there is also a normal dependency on that package - pubspec.yaml:56:3 - unnecessary_dev_dependency
+

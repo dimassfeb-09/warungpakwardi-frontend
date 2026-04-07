@@ -30,7 +30,7 @@ class CardProduct extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            product.name!,
+            product.name,
             style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
           ),
           Text(

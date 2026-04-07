@@ -37,7 +37,7 @@ class ProductList extends StatelessWidget {
                 },
                 onDelete: () {
                   context.read<ProductBloc>().add(
-                    DeleteProductEvent(productId: products[index].id!),
+                    DeleteProductEvent(productId: products[index].id),
                   );
                 },
               ),

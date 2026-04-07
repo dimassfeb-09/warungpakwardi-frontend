@@ -7,10 +7,7 @@ import 'package:screenshot/screenshot.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:warungpakwardi/blocs/auth/bloc/auth_bloc.dart';
 import 'package:warungpakwardi/constant/color.dart';
-import 'package:warungpakwardi/helper/generatePdfReceipt.dart';
 import 'package:warungpakwardi/helper/toIDR.dart';
-import 'package:warungpakwardi/models/User.dart';
-import 'package:warungpakwardi/screens/ReceiptGeneratorPage.dart';
 import 'package:warungpakwardi/widgets/ButtonCustom.dart';
 
 import '../blocs/transaction_detail/bloc/transaction_detail_bloc.dart';
@@ -21,10 +18,10 @@ class TransactionDetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ScreenshotController _screenshotController = ScreenshotController();
+    final ScreenshotController screenshotController = ScreenshotController();
 
-    Future<void> _captureAndShare() async {
-      final image = await _screenshotController.capture();
+    Future<void> captureAndShare() async {
+      final image = await screenshotController.capture();
       if (image != null) {
         final directory = await getTemporaryDirectory();
         final imagePath = await File('${directory.path}/receipt.png').create();
@@ -32,7 +29,7 @@ class TransactionDetailScreen extends StatelessWidget {
 
         await Share.shareXFiles([
           XFile(imagePath.path),
-        ], text: 'Struk Transaksi dari Warung Pak Wardi');
+        ], subject: 'Struk Transaksi dari Warung Pak Wardi');
       }
     }
 
@@ -65,7 +62,7 @@ class TransactionDetailScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Screenshot(
-                    controller: _screenshotController,
+                    controller: screenshotController,
                     child: Container(
                       color: kWhiteColor,
                       child: Column(
@@ -254,7 +251,7 @@ class TransactionDetailScreen extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(horizontal: 8),
                     child: ButtonCustom(
                       name: 'Bagikan Struk',
-                      onClick: _captureAndShare,
+                      onClick: captureAndShare,
                     ),
                   ),
                 ],

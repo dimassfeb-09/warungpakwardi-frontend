@@ -16,7 +16,7 @@ class TransactionAddScreen extends StatelessWidget {
   double getTotalPrice(List<CheckoutItem> selectedProduct) {
     return selectedProduct.fold(
       0,
-      (total, item) => total + ((item.product.price ?? 0) * item.quantity),
+      (total, item) => total + (item.product.price * item.quantity),
     );
   }
 
@@ -146,7 +146,7 @@ class TransactionAddScreen extends StatelessWidget {
                             itemBuilder: (context, index) {
                               final item = selectedProduct[index];
                               final totalPrice =
-                                  (item.product.price ?? 0) * item.quantity;
+                                  item.product.price * item.quantity;
 
                               return Container(
                                 padding: const EdgeInsets.symmetric(
@@ -168,7 +168,7 @@ class TransactionAddScreen extends StatelessWidget {
                                           MainAxisAlignment.spaceBetween,
                                       children: [
                                         Text(
-                                          item.product.name ?? '',
+                                          item.product.name,
                                           style: const TextStyle(
                                             fontWeight: FontWeight.bold,
                                           ),
@@ -198,7 +198,7 @@ class TransactionAddScreen extends StatelessWidget {
                                           MainAxisAlignment.spaceBetween,
                                       children: [
                                         Text(
-                                          "${item.quantity} x ${toIDR((item.product.price ?? 0).toInt())}",
+                                          "${item.quantity} x ${toIDR(item.product.price.toInt())}",
                                         ),
                                         Text(
                                           toIDR(totalPrice.toInt()),
