@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:warungpakwardi/constant/color.dart'; // import AppColors
 import 'package:warungpakwardi/widgets/homescreen/LowStockCard.dart';
 
 import '../../blocs/home/bloc/home_bloc.dart';
@@ -14,24 +15,46 @@ class LowStock extends StatelessWidget {
       builder: (context, state) {
         List<Product> products = [];
 
-        if (state is FetchDashboardLoadedState) {
-          final dashboard = state.dashboard;
-          products = dashboard.productLowStock ?? [];
+        if (state is FetchDashboardLoadingState) {
+          return const SizedBox.shrink(); // Hide while loading, Hero handles shimmer
+        }
+
+        if (products.isEmpty && state is FetchDashboardLoadedState) {
+          return const SizedBox.shrink(); // Hide if no low stock items
         }
 
         return Container(
-          margin: const EdgeInsets.only(top: 16),
+          margin: const EdgeInsets.only(top: 24),
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
-                "Produk Stok Menipis",
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                   Text(
+                    "Peringatan Stok",
+                    style: TextStyle(
+                      fontSize: 18, 
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.onSurface(context),
+                      letterSpacing: 0.5,
+                    ),
+                  ),
+                  if (products.length > 3)
+                  Text(
+                    "Semua (${products.length})",
+                    style: TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w600,
+                      color: kAccentLowStock,
+                    ),
+                  ),
+                ],
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: 16),
               ListView.separated(
-                itemCount: products.length,
+                itemCount: products.length > 5 ? 5 : products.length, // limit to 5 on home
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
                 itemBuilder: (context, index) {
@@ -40,20 +63,17 @@ class LowStock extends StatelessWidget {
                     name: product.name,
                     stock: product.stock,
                     onTap: () async {
-                      final newUpdated = await Navigator.pushNamed(
+                      await Navigator.pushNamed(
                         context,
                         '/product-edit-screen',
                         arguments: product,
                       );
-
-                      if (newUpdated != null) {
-                        context.read<HomeBloc>().add(FetchDashboardEvent());
-                      }
+                      // Auto-refresh via routeObserver in HomeScreen handles the BLoC trigger
                     },
                   );
                 },
                 separatorBuilder:
-                    (BuildContext context, int index) => SizedBox(height: 12),
+                    (BuildContext context, int index) => const SizedBox(height: 14),
               ),
             ],
           ),

@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:warungpakwardi/constant/color.dart';
+import '../../constant/color.dart';
 
 class LowStockCard extends StatelessWidget {
   final String name;
-  final int stock;
+  final num stock;
   final VoidCallback? onTap;
 
   const LowStockCard({
@@ -16,31 +15,76 @@ class LowStockCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+    final bool isDark = AppColors.isDark(context);
+    final Color warningColor = stock <= 3 ? kRedColor : kAccentLowStock;
+
+    return InkWell(
       onTap: onTap,
+      borderRadius: BorderRadius.circular(16),
       child: Container(
-        padding: EdgeInsets.all(8),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
         decoration: BoxDecoration(
-          border: Border.all(width: 2, color: kGreyDarkColor.withAlpha(90)),
-          borderRadius: BorderRadius.circular(10),
+          color: isDark ? const Color(0xFF1c1c1e) : Colors.white,
+          borderRadius: BorderRadius.circular(16),
+          boxShadow: AppColors.softShadow(context),
+          border: Border(
+            left: BorderSide(
+              color: warningColor,
+              width: 5,
+            ),
+          ),
         ),
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  name,
-                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
-                ),
-                Text(
-                  "Sisa stok: $stock",
-                  style: TextStyle(fontSize: 12, color: kRedLight),
-                ),
-              ],
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    name,
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.onSurface(context),
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Row(
+                    children: [
+                      Icon(
+                        Icons.warning_amber_rounded,
+                        size: 14,
+                        color: warningColor.withOpacity(0.8),
+                      ),
+                      const SizedBox(width: 4),
+                      Text(
+                        stock <= 3 ? "Kritis - Segera restok" : "Stok menipis",
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: warningColor.withOpacity(0.8),
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
-            SvgPicture.asset("assets/alert.svg"),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+              decoration: BoxDecoration(
+                color: warningColor.withOpacity(0.12),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Text(
+                "$stock tersisa",
+                style: TextStyle(
+                  fontSize: 13,
+                  fontWeight: FontWeight.bold,
+                  color: warningColor,
+                ),
+              ),
+            ),
           ],
         ),
       ),

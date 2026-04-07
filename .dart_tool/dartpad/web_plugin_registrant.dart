@@ -6,8 +6,7 @@
 // @dart = 2.13
 // ignore_for_file: type=lint
 
-import 'package:connectivity_plus/src/connectivity_plus_web.dart';
-import 'package:flutter_secure_storage_web/flutter_secure_storage_web.dart';
+import 'package:file_picker/src/platform/web/file_picker_web.dart';
 import 'package:printing/printing_web.dart';
 import 'package:share_plus/src/share_plus_web.dart';
 import 'package:shared_preferences_web/shared_preferences_web.dart';
@@ -16,8 +15,7 @@ import 'package:flutter_web_plugins/flutter_web_plugins.dart';
 
 void registerPlugins([final Registrar? pluginRegistrar]) {
   final Registrar registrar = pluginRegistrar ?? webPluginRegistrar;
-  ConnectivityPlusWebPlugin.registerWith(registrar);
-  FlutterSecureStorageWeb.registerWith(registrar);
+  FilePickerWeb.registerWith(registrar);
   PrintingPlugin.registerWith(registrar);
   SharePlusWebPlugin.registerWith(registrar);
   SharedPreferencesPlugin.registerWith(registrar);

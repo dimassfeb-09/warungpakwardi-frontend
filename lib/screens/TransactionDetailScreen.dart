@@ -5,7 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:screenshot/screenshot.dart';
 import 'package:share_plus/share_plus.dart';
-import 'package:warungpakwardi/blocs/auth/bloc/auth_bloc.dart';
+
 import 'package:warungpakwardi/constant/color.dart';
 import 'package:warungpakwardi/helper/toIDR.dart';
 import 'package:warungpakwardi/widgets/ButtonCustom.dart';
@@ -19,6 +19,7 @@ class TransactionDetailScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ScreenshotController screenshotController = ScreenshotController();
+    final isDark = AppColors.isDark(context);
 
     Future<void> captureAndShare() async {
       final image = await screenshotController.capture();
@@ -29,20 +30,23 @@ class TransactionDetailScreen extends StatelessWidget {
 
         await Share.shareXFiles([
           XFile(imagePath.path),
-        ], subject: 'Struk Transaksi dari Warung Pak Wardi');
+        ], subject: 'Struk Transaksi dari Warung Digital');
       }
     }
 
     return Scaffold(
-      backgroundColor: kWhiteColor,
+      backgroundColor: isDark ? kBlackColor : kLightGreyColor,
       appBar: AppBar(
-        title: const Text(
+        title: Text(
           "Detail Transaksi",
-          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+          style: AppTypography.subHeader(
+            context,
+          ).copyWith(color: isDark ? kWhiteColor : kBlackColor),
         ),
-        bottom: PreferredSize(preferredSize: Size(1, 1), child: Divider()),
-        backgroundColor: kWhiteColor,
+        backgroundColor: isDark ? kBlackColor : kLightGreyColor,
+        elevation: 0,
         centerTitle: true,
+        iconTheme: IconThemeData(color: isDark ? kWhiteColor : kBlackColor),
       ),
       body: BlocBuilder<TransactionDetailBloc, TransactionDetailState>(
         builder: (context, state) {
@@ -51,215 +55,223 @@ class TransactionDetailScreen extends StatelessWidget {
           }
 
           if (state is TransactionDetailErrorState) {
-            return const Center(child: Text("Gagal ambil data transaksi"));
+            return Center(
+              child: Text(
+                "Gagal mengambil data transaksi",
+                style: AppTypography.body(context),
+              ),
+            );
           }
 
           if (state is TransactionDetailLoadedState) {
             final detail = state.transactionDetail;
 
             return SingleChildScrollView(
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Screenshot(
                     controller: screenshotController,
                     child: Container(
-                      color: kWhiteColor,
+                      padding: const EdgeInsets.all(24),
+                      decoration: BoxDecoration(
+                        color: isDark ? kBlack2Color : kWhiteColor,
+                        borderRadius: BorderRadius.circular(20),
+                        boxShadow: AppColors.softShadow(context),
+                      ),
                       child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          SizedBox(height: 10),
-                          BlocBuilder<AuthBloc, AuthState>(
-                            builder: (context, state) {
-                              String name = '';
-                              if (state is UserAuthenticated) {
-                                name = state.user.name;
-                              }
-                              return Center(
-                                child: Text(
-                                  "Struk $name",
-                                  style: TextStyle(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              );
-                            },
+                          _buildReceiptHeader(context, detail.transactionId),
+                          const SizedBox(height: 10),
+                          Text(
+                            formatDate(detail.transactionDate),
+                            style: AppTypography.caption(context),
                           ),
-                          SizedBox(height: 10),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 16,
-                              vertical: 5,
-                            ),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text("ID Transaksi #${detail.transactionId}"),
-                                Text(formatDate(detail.transactionDate)),
-                              ],
-                            ),
-                          ),
-                          const Divider(),
-
-                          // Judul daftar produk
                           const Padding(
-                            padding: EdgeInsets.symmetric(
-                              horizontal: 16,
-                              vertical: 5,
-                            ),
-                            child: Text(
-                              "Daftar Produk",
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
+                            padding: EdgeInsets.symmetric(vertical: 24),
+                            child: _DashedDivider(),
                           ),
-
-                          // List item transaksi
-                          ListView.separated(
-                            shrinkWrap: true,
-                            physics: const NeverScrollableScrollPhysics(),
-                            itemCount: detail.items.length,
-                            separatorBuilder:
-                                (context, index) => const Divider(),
-                            itemBuilder: (context, index) {
-                              final item = detail.items[index];
-                              return Padding(
-                                padding: EdgeInsets.symmetric(
-                                  horizontal: 16,
-                                  vertical: 5,
-                                ),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          item.name,
-                                          style: TextStyle(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                        Text(
-                                          "${item.quantity}x @ ${toIDR(item.unitPrice)}",
-                                        ),
-                                      ],
-                                    ),
-                                    Text(toIDR(item.totalPrice)),
-                                  ],
-                                ),
-                              );
-                            },
+                          _buildItemList(context, detail.items),
+                          const Padding(
+                            padding: EdgeInsets.symmetric(vertical: 24),
+                            child: _DashedDivider(),
                           ),
-
-                          const Divider(),
-
-                          // Subtotal dan Total
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Padding(
-                                padding: EdgeInsets.symmetric(
-                                  horizontal: 16,
-                                  vertical: 5,
-                                ),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      "Subtotal",
-                                      style: TextStyle(fontSize: 16),
-                                    ),
-                                    Text(
-                                      toIDR(detail.subtotal),
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              Divider(),
-                              Padding(
-                                padding: EdgeInsets.symmetric(
-                                  horizontal: 16,
-                                  vertical: 5,
-                                ),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      "Total",
-                                      style: TextStyle(
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                    Text(
-                                      toIDR(detail.total),
-                                      style: TextStyle(
-                                        fontSize: 18,
-                                        color: kBluePrimary,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-
-                          SizedBox(height: 30),
-
-                          BlocBuilder<AuthBloc, AuthState>(
-                            builder: (context, state) {
-                              if (state is UserAuthenticated) {
-                                final user = state.user;
-
-                                return Center(
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                      horizontal: 30,
-                                    ),
-                                    child: Text(
-                                      "Terima kasih telah berbelanja di ${user.name}, "
-                                      "apabila ada kendala dapat menghubungi ke email ${user.email}",
-                                      textAlign: TextAlign.center,
-                                      style: const TextStyle(fontSize: 16),
-                                    ),
-                                  ),
-                                );
-                              }
-
-                              return const SizedBox();
-                            },
-                          ),
-                          SizedBox(height: 30),
+                          _buildTotalSection(context, detail),
+                          const SizedBox(height: 40),
+                          _buildFooter(context),
                         ],
                       ),
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8),
-                    child: ButtonCustom(
-                      name: 'Bagikan Struk',
-                      onClick: captureAndShare,
-                    ),
+                  const SizedBox(height: 30),
+                  ButtonCustom(
+                    name: 'Bagikan Struk',
+                    gradient: const [kBluePrimary, Color(0xFF1E40AF)],
+                    onClick: captureAndShare,
                   ),
+                  const SizedBox(height: 20),
                 ],
               ),
             );
           }
-          return const SizedBox.shrink(); // Fallback kosong
+          return const SizedBox.shrink();
         },
+      ),
+    );
+  }
+
+  Widget _buildReceiptHeader(BuildContext context, String id) {
+    return Column(
+      children: [
+        Container(
+          padding: const EdgeInsets.all(12),
+          decoration: BoxDecoration(
+            color: kGreenColor.withOpacity(0.1),
+            shape: BoxShape.circle,
+          ),
+          child: const Icon(
+            Icons.check_circle_rounded,
+            color: kGreenColor,
+            size: 40,
+          ),
+        ),
+        const SizedBox(height: 16),
+        Text(
+          "Pembayaran Berhasil",
+          style: AppTypography.title(context).copyWith(color: kGreenColor),
+        ),
+        const SizedBox(height: 8),
+        Text(
+          "ID Transaksi #$id",
+          style: AppTypography.caption(
+            context,
+          ).copyWith(fontWeight: FontWeight.bold),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildItemList(BuildContext context, List detailItems) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          children: [
+            const Icon(
+              Icons.shopping_cart_outlined,
+              size: 16,
+              color: kBluePrimary,
+            ),
+            const SizedBox(width: 8),
+            Text(
+              "Rincian Belanja",
+              style: AppTypography.title(
+                context,
+              ).copyWith(color: kBluePrimary, fontSize: 14),
+            ),
+          ],
+        ),
+        const SizedBox(height: 16),
+        ...detailItems.map((item) {
+          return Padding(
+            padding: const EdgeInsets.only(bottom: 12),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        item.name,
+                        style: AppTypography.body(
+                          context,
+                        ).copyWith(fontWeight: FontWeight.w600),
+                      ),
+                      Text(
+                        "${item.quantity}x @ ${toIDR(item.unitPrice)}",
+                        style: AppTypography.caption(context),
+                      ),
+                    ],
+                  ),
+                ),
+                Text(
+                  toIDR(item.totalPrice),
+                  style: AppTypography.body(
+                    context,
+                  ).copyWith(fontWeight: FontWeight.bold),
+                ),
+              ],
+            ),
+          );
+        }).toList(),
+      ],
+    );
+  }
+
+  Widget _buildTotalSection(BuildContext context, dynamic detail) {
+    return Column(
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text("Subtotal", style: AppTypography.body(context)),
+            Text(toIDR(detail.subtotal), style: AppTypography.body(context)),
+          ],
+        ),
+        const SizedBox(height: 16),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              "Total Pembayaran",
+              style: AppTypography.title(context).copyWith(fontSize: 18),
+            ),
+            Text(
+              toIDR(detail.total),
+              style: AppTypography.header(
+                context,
+              ).copyWith(fontSize: 20, color: kBluePrimary),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+
+  Widget _buildFooter(BuildContext context) {
+    return Column(
+      children: [
+        Text(
+          "Warung Digital",
+          style: AppTypography.title(context).copyWith(fontSize: 14),
+        ),
+        const SizedBox(height: 4),
+        Text(
+          "Terima kasih telah berbelanja!\nSimpan struk ini sebagai bukti pembayaran.",
+          textAlign: TextAlign.center,
+          style: AppTypography.caption(context),
+        ),
+      ],
+    );
+  }
+}
+
+class _DashedDivider extends StatelessWidget {
+  const _DashedDivider();
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: List.generate(
+        30,
+        (index) => Expanded(
+          child: Container(
+            margin: const EdgeInsets.symmetric(horizontal: 2),
+            height: 1,
+            color: AppColors.isDark(context) ? Colors.white10 : Colors.black12,
+          ),
+        ),
       ),
     );
   }

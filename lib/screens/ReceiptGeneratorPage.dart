@@ -26,7 +26,7 @@ class _ReceiptGeneratorWidgetState extends State<ReceiptGeneratorWidget> {
 
       await Share.shareXFiles([
         XFile(imagePath.path),
-      ], subject: 'Struk Transaksi dari Warung Pak Wardi');
+      ], subject: 'Struk Transaksi dari Warung Digital');
     }
   }
 

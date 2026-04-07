@@ -2,12 +2,12 @@ import 'package:equatable/equatable.dart';
 import 'package:warungpakwardi/models/Product.dart';
 
 class CheckoutItem {
-  final int quantity;
+  final num quantity;
   final Product product;
 
   CheckoutItem({required this.quantity, required this.product});
 
-  CheckoutItem copyWith({int? quantity, Product? product}) {
+  CheckoutItem copyWith({num? quantity, Product? product}) {
     return CheckoutItem(
       quantity: quantity ?? this.quantity,
       product: product ?? this.product,
@@ -29,7 +29,9 @@ class TransactionAddState extends Equatable {
   List<Object?> get props => [items];
 }
 
-class TransactionAddLoadingState extends TransactionAddState {}
+class TransactionAddLoadingState extends TransactionAddState {
+  const TransactionAddLoadingState({super.items});
+}
 
 class TransactionAddLoadedState extends TransactionAddState {
   final String transactionId;

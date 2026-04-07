@@ -13,10 +13,10 @@ class TextFieldCustom extends StatefulWidget {
   final Widget? prefix;
   final Widget? suffix;
   final Color? colorField;
-  final bool? enabled;
+  final bool enabled;
 
-  final Function(dynamic value)? onChange;
-  final Function(dynamic value)? onSubmitted;
+  final Function(String value)? onChange;
+  final Function(String value)? onSubmitted;
 
   const TextFieldCustom({
     super.key,
@@ -39,11 +39,25 @@ class TextFieldCustom extends StatefulWidget {
 
 class _TextFieldCustomState extends State<TextFieldCustom> {
   bool obscureText = false;
+  late FocusNode _focusNode;
+  bool _isFocused = false;
 
   @override
   void initState() {
     super.initState();
     obscureText = widget.textInputType == TextFieldType.password;
+    _focusNode = FocusNode();
+    _focusNode.addListener(() {
+      setState(() {
+        _isFocused = _focusNode.hasFocus;
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    _focusNode.dispose();
+    super.dispose();
   }
 
   void toggleObscureText() {
@@ -53,83 +67,66 @@ class _TextFieldCustomState extends State<TextFieldCustom> {
   }
 
   void _handleOnChange(String value) {
-    switch (widget.textInputType) {
-      case TextFieldType.number:
-        if (value.isNotEmpty && !RegExp(r'^[0-9]+$').hasMatch(value)) {
-          return; // Mencegah input selain angka
-        }
-        break;
-      case TextFieldType.email:
-        if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value)) {
-          // Bisa tambahkan logika untuk validasi email
-        }
-        break;
-      case TextFieldType.phone:
-        if (value.isNotEmpty && !RegExp(r'^[0-9]+$').hasMatch(value)) {
-          return; // Mencegah input selain angka
-        }
-        break;
-      default:
-        break;
-    }
-
     if (widget.onChange != null) {
       widget.onChange!(value);
     }
   }
 
   @override
-  void didUpdateWidget(covariant TextFieldCustom oldWidget) {
-    super.didUpdateWidget(oldWidget);
-  }
-
-  @override
   Widget build(BuildContext context) {
+    final isDark = AppColors.isDark(context);
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      spacing: 8,
       children: [
-        if (widget.title != null)
+        if (widget.title != null) ...[
           Text(
             widget.title!,
-            style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
+            style: AppTypography.title(context).copyWith(
+              color: _isFocused ? kBluePrimary : AppColors.onSurface(context),
+            ),
           ),
-        Container(
-          height: 56, // Menentukan tinggi container
+          const SizedBox(height: 8),
+        ],
+        AnimatedContainer(
+          duration: const Duration(milliseconds: 200),
           decoration: BoxDecoration(
-            color:
-                widget.enabled == true ? widget.colorField : Colors.transparent,
-            borderRadius: BorderRadius.circular(8),
+            color: widget.enabled
+                ? (widget.colorField ?? (isDark ? kBlack2Color : kLightGreyColor))
+                : (isDark ? Colors.white10 : kGreyColor),
+            borderRadius: BorderRadius.circular(kInputRadius),
+            border: Border.all(
+              color: widget.errorText != null
+                  ? kRedColor
+                  : (_isFocused ? kBluePrimary : Colors.transparent),
+              width: 1.5,
+            ),
           ),
           child: Center(
-            // Memastikan konten berada di tengah
             child: TextField(
               controller: widget.controller,
+              focusNode: _focusNode,
               obscureText: obscureText,
               keyboardType: textInputType(),
               enabled: widget.enabled,
               onChanged: _handleOnChange,
               onSubmitted: widget.onSubmitted,
+              style: AppTypography.body(context),
               decoration: InputDecoration(
-                prefixIcon:
-                    widget.prefix != null
-                        ? widget.prefix is Icon
-                            ? widget.prefix
-                            : Padding(
-                              padding: const EdgeInsets.only(
-                                top: 12,
-                                left: 16,
-                                right: 8,
-                              ),
-                              child: widget.prefix,
-                            )
-                        : null,
-                suffixIcon: _buildSuffixIcon(),
+                prefixIcon: widget.prefix != null
+                    ? IconTheme(
+                        data: IconThemeData(
+                          color: _isFocused ? kBluePrimary : kGreyDarkColor,
+                        ),
+                        child: widget.prefix!,
+                      )
+                    : null,
+                suffixIcon: _buildSuffixIcon(isDark),
                 hintText: widget.hintText,
-                border: OutlineInputBorder(
-                  borderSide: BorderSide(width: 1, color: kGreyDarkColor),
-                  borderRadius: BorderRadius.circular(8),
+                hintStyle: AppTypography.body(context).copyWith(
+                  color: isDark ? Colors.white38 : Colors.black38,
                 ),
+                border: InputBorder.none,
                 contentPadding: const EdgeInsets.symmetric(
                   vertical: 18,
                   horizontal: 16,
@@ -138,26 +135,38 @@ class _TextFieldCustomState extends State<TextFieldCustom> {
             ),
           ),
         ),
-        if (widget.errorText != null)
+        if (widget.errorText != null) ...[
+          const SizedBox(height: 6),
           Padding(
-            padding: const EdgeInsets.only(top: 6, left: 4),
+            padding: const EdgeInsets.only(left: 4),
             child: Text(
               widget.errorText!,
-              style: const TextStyle(color: Colors.red, fontSize: 12),
+              style: AppTypography.caption(context).copyWith(color: kRedColor),
             ),
           ),
+        ],
       ],
     );
   }
 
-  Widget? _buildSuffixIcon() {
+  Widget? _buildSuffixIcon(bool isDark) {
     if (widget.textInputType == TextFieldType.password) {
       return GestureDetector(
         onTap: toggleObscureText,
-        child: Icon(obscureText ? Icons.visibility_off : Icons.visibility),
+        child: Icon(
+          obscureText ? Icons.visibility_off : Icons.visibility,
+          color: _isFocused ? kBluePrimary : kGreyDarkColor,
+        ),
       );
     }
-    return widget.suffix;
+    return widget.suffix != null
+        ? IconTheme(
+            data: IconThemeData(
+              color: _isFocused ? kBluePrimary : kGreyDarkColor,
+            ),
+            child: widget.suffix!,
+          )
+        : null;
   }
 
   TextInputType textInputType() {

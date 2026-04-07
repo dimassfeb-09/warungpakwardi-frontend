@@ -4,6 +4,10 @@ class TransactionReport {
   final TransactionSummaryPerDay transactionSummaryToday;
   final List<ProductSalesSummary> totalSoldProduct;
   final List<TopSellingProduct> productTopSelling;
+  final int totalRevenue;
+  final int totalProfit; // Added
+  final int transactionCount;
+  final int itemsSoldTotal;
 
   TransactionReport({
     required this.transactionSummaryMonthly,
@@ -11,6 +15,10 @@ class TransactionReport {
     required this.transactionSummaryToday,
     required this.totalSoldProduct,
     required this.productTopSelling,
+    this.totalRevenue = 0,
+    this.totalProfit = 0, // Added
+    this.transactionCount = 0,
+    this.itemsSoldTotal = 0,
   });
 
   factory TransactionReport.fromJson(Map<String, dynamic> json) {
@@ -34,6 +42,10 @@ class TransactionReport {
           (json['product_top_selling'] as List)
               .map((e) => TopSellingProduct.fromJson(e))
               .toList(),
+      totalRevenue: json['total_revenue'] ?? 0,
+      totalProfit: json['total_profit'] ?? 0,
+      transactionCount: json['transaction_count'] ?? 0,
+      itemsSoldTotal: json['items_sold_total'] ?? 0,
     );
   }
 
@@ -46,6 +58,10 @@ class TransactionReport {
       'transaction_summary_today': transactionSummaryToday.toJson(),
       'total_sold_product': totalSoldProduct.map((e) => e.toJson()).toList(),
       'product_top_selling': productTopSelling.map((e) => e.toJson()).toList(),
+      'total_revenue': totalRevenue,
+      'total_profit': totalProfit, // Added
+      'transaction_count': transactionCount,
+      'items_sold_total': itemsSoldTotal,
     };
   }
 }
@@ -79,12 +95,14 @@ class ProductSalesSummary {
   final String name;
   final int quantity;
   final int totalRevenue;
+  final int totalProfit; // Added
 
   ProductSalesSummary({
     required this.productId,
     required this.name,
     required this.quantity,
     required this.totalRevenue,
+    required this.totalProfit, // Added
   });
 
   factory ProductSalesSummary.fromJson(Map<String, dynamic> json) {
@@ -93,6 +111,7 @@ class ProductSalesSummary {
       name: json['name'],
       quantity: json['quantity'],
       totalRevenue: json['total_revenue'],
+      totalProfit: json['total_profit'] ?? 0, // Added
     );
   }
 
@@ -102,6 +121,7 @@ class ProductSalesSummary {
       'name': name,
       'quantity': quantity,
       'total_revenue': totalRevenue,
+      'total_profit': totalProfit, // Added
     };
   }
 }

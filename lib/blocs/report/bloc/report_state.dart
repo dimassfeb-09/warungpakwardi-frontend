@@ -13,12 +13,24 @@ class FetchReportTransactionLoading extends ReportState {}
 
 class FetchReportTransactionLoaded extends ReportState {
   final TransactionReport transactionReport;
+  final DateTime startDate;
+  final DateTime endDate;
 
-  FetchReportTransactionLoaded({required this.transactionReport});
+  FetchReportTransactionLoaded({
+    required this.transactionReport,
+    required this.startDate,
+    required this.endDate,
+  });
+
+  @override
+  List<Object> get props => [transactionReport, startDate, endDate];
 }
 
 class FetchReportTransactionError extends ReportState {
   final String message;
 
   FetchReportTransactionError({required this.message});
+
+  @override
+  List<Object> get props => [message];
 }

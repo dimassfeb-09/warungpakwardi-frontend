@@ -1,6 +1,22 @@
+# Flutter/Dart
+.dart_tool/
+.packages
+.pub-cache/
+.pub/
+build/
 
-# FVM Version Cache
-.fvm/
-/build
-./build
-build
+# Android
+.gradle/
+local.properties
+*.keystore
+*.jks
+*.log
+
+# iOS/macOS
+.DS_Store
+.idea/
+.vscode/
+
+# Project specific
+node_modules/
+.env

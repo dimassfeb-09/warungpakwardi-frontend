@@ -5,9 +5,17 @@ import '../constant/color.dart';
 class ItemSelected<T> {
   final T? key;
   final String? value;
+  final String? subtitle;
+  final String? trailing;
   final bool disabled;
 
-  ItemSelected({required this.key, required this.value, this.disabled = false});
+  ItemSelected({
+    required this.key,
+    required this.value,
+    this.subtitle,
+    this.trailing,
+    this.disabled = false,
+  });
 }
 
 class SelectItemCustom<T> extends StatefulWidget {
@@ -17,8 +25,7 @@ class SelectItemCustom<T> extends StatefulWidget {
   final Function(ItemSelected<T> selectedItem) onSelect;
   final String hint;
   final Color? color;
-  final Color? selectedColor;
-  final bool? searchable;
+  final bool searchable;
   final bool isLoading;
 
   const SelectItemCustom({
@@ -28,7 +35,6 @@ class SelectItemCustom<T> extends StatefulWidget {
     this.color,
     required this.hint,
     this.selectedItem,
-    this.selectedColor = kGreyColor,
     this.title,
     this.searchable = true,
     this.isLoading = false,
@@ -39,194 +45,243 @@ class SelectItemCustom<T> extends StatefulWidget {
 }
 
 class _SelectItemCustomState<T> extends State<SelectItemCustom<T>> {
-  bool isDropdownOpen = false;
-  ItemSelected<T>? selectedItem;
-  List<ItemSelected<T>> filteredItems = [];
-  TextEditingController searchController = TextEditingController();
-
-  @override
-  void initState() {
-    super.initState();
-    selectedItem = widget.selectedItem;
-    filteredItems = widget.items;
-  }
-
-  @override
-  void didUpdateWidget(covariant SelectItemCustom<T> oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    if (widget.items != oldWidget.items) {
-      setState(() {
-        filteredItems = widget.items;
-      });
-    }
-
-    if (widget.selectedItem != oldWidget.selectedItem) {
-      setState(() {
-        selectedItem = widget.selectedItem;
-      });
-    }
-  }
-
-  void toggleDropdown() {
-    if (widget.isLoading) return;
-    setState(() {
-      isDropdownOpen = !isDropdownOpen;
-      if (!isDropdownOpen) {
-        searchController.clear();
-        filteredItems = widget.items;
-      }
-    });
-  }
-
-  void selectItem(ItemSelected<T> item) {
-    if (widget.isLoading) return;
-    setState(() {
-      selectedItem = item;
-      isDropdownOpen = false;
-      searchController.clear();
-      filteredItems = widget.items;
-      widget.onSelect(item);
-    });
-  }
-
-  void filterItems(String query) {
-    setState(() {
-      if (query.isEmpty) {
-        filteredItems = widget.items;
-      } else {
-        filteredItems =
-            widget.items.where((item) {
-              return item.value?.toLowerCase().contains(query.toLowerCase()) ??
-                  false;
-            }).toList();
-      }
-    });
+  void _showSelectionSheet(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (context) => _SelectionSheet<T>(
+        items: widget.items,
+        onSelect: widget.onSelect,
+        hint: widget.hint,
+        searchable: widget.searchable,
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    final mediaQueryWidth = MediaQuery.of(context).size.width;
+    final isDark = AppColors.isDark(context);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      spacing: 8,
       children: [
-        if (widget.title != null)
+        if (widget.title != null) ...[
           Text(
             widget.title!,
-            style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
+            style: AppTypography.subHeader(context).copyWith(fontSize: 14),
           ),
+          const SizedBox(height: 8),
+        ],
         GestureDetector(
-          onTap: toggleDropdown,
+          onTap: () => _showSelectionSheet(context),
           child: Container(
             height: 56,
             padding: const EdgeInsets.symmetric(horizontal: 16),
-            width: mediaQueryWidth,
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(8),
-              border: Border.all(color: Colors.grey),
+              color: isDark ? kBlack2Color : kWhiteColor,
+              borderRadius: BorderRadius.circular(16),
+              border: Border.all(
+                color: isDark ? Colors.white12 : Colors.black.withOpacity(0.08),
+              ),
+              boxShadow: AppColors.softShadow(context).map((s) => s.copyWith(blurRadius: 5)).toList(),
             ),
-            alignment: Alignment.center,
             child: Row(
               children: [
+                Icon(
+                  Icons.search_rounded,
+                  color: isDark ? Colors.white70 : Colors.black45,
+                ),
+                const SizedBox(width: 12),
                 Expanded(
                   child: Text(
-                    widget.hint,
-                    textAlign: TextAlign.start,
-                    style: const TextStyle(fontSize: 16),
+                    widget.selectedItem?.value ?? widget.hint,
+                    style: AppTypography.body(context).copyWith(
+                      color: widget.selectedItem != null
+                          ? (isDark ? kWhiteColor : kBlackColor)
+                          : (isDark ? Colors.white38 : Colors.black38),
+                      fontWeight: widget.selectedItem != null ? FontWeight.w600 : FontWeight.normal,
+                    ),
                   ),
                 ),
-                if (!widget.isLoading)
+                if (widget.isLoading)
+                  const SizedBox(
+                    height: 20,
+                    width: 20,
+                    child: CircularProgressIndicator(strokeWidth: 2),
+                  )
+                else
                   Icon(
-                    isDropdownOpen
-                        ? Icons.keyboard_arrow_up_rounded
-                        : Icons.keyboard_arrow_down_rounded,
+                    Icons.keyboard_arrow_down_rounded,
+                    color: isDark ? Colors.white38 : Colors.black38,
                   ),
               ],
             ),
           ),
         ),
-        AnimatedContainer(
-          duration: const Duration(milliseconds: 300),
-          curve: Curves.easeInOut,
-          width: mediaQueryWidth,
-          constraints: BoxConstraints(
-            maxHeight:
-                isDropdownOpen ? MediaQuery.of(context).size.height * 0.3 : 0,
-          ),
-          decoration: BoxDecoration(
-            border:
-                isDropdownOpen
-                    ? Border.all(color: Colors.grey)
-                    : Border.all(color: Colors.transparent),
-            borderRadius: const BorderRadius.only(
-              bottomLeft: Radius.circular(8),
-              bottomRight: Radius.circular(8),
+      ],
+    );
+  }
+}
+
+class _SelectionSheet<T> extends StatefulWidget {
+  final List<ItemSelected<T>> items;
+  final Function(ItemSelected<T>) onSelect;
+  final String hint;
+  final bool searchable;
+
+  const _SelectionSheet({
+    required this.items,
+    required this.onSelect,
+    required this.hint,
+    required this.searchable,
+  });
+
+  @override
+  State<_SelectionSheet<T>> createState() => _SelectionSheetState<T>();
+}
+
+class _SelectionSheetState<T> extends State<_SelectionSheet<T>> {
+  late List<ItemSelected<T>> filteredItems;
+  final TextEditingController searchController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    filteredItems = widget.items;
+    searchController.addListener(() {
+      if (searchController.text.isEmpty && filteredItems.length != widget.items.length) {
+        setState(() {
+          filteredItems = widget.items;
+        });
+      }
+    });
+  }
+
+  void _filterItems(String query) {
+    setState(() {
+      filteredItems = widget.items.where((item) {
+        final matchesName = item.value?.toLowerCase().contains(query.toLowerCase()) ?? false;
+        final matchesSubtitle = item.subtitle?.toLowerCase().contains(query.toLowerCase()) ?? false;
+        return matchesName || matchesSubtitle;
+      }).toList();
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final isDark = AppColors.isDark(context);
+    final bottomPadding = MediaQuery.of(context).viewInsets.bottom;
+
+    return Container(
+      margin: const EdgeInsets.only(top: 100),
+      decoration: BoxDecoration(
+        color: isDark ? kBlack2Color : kWhiteColor,
+        borderRadius: const BorderRadius.vertical(top: Radius.circular(32)),
+      ),
+      padding: EdgeInsets.fromLTRB(20, 12, 20, 20 + bottomPadding),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Container(
+            width: 40,
+            height: 4,
+            decoration: BoxDecoration(
+              color: isDark ? Colors.white10 : Colors.black12,
+              borderRadius: BorderRadius.circular(2),
             ),
           ),
-          child:
-              isDropdownOpen
-                  ? SingleChildScrollView(
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        if (widget.searchable == true)
-                          Padding(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 8,
-                              vertical: 4,
-                            ),
-                            child: TextField(
-                              controller: searchController,
-                              onChanged: filterItems,
-                              decoration: InputDecoration(
-                                hintText: "Search...",
-                                prefixIcon: const Icon(Icons.search),
-                                contentPadding: const EdgeInsets.symmetric(
-                                  vertical: 10,
-                                  horizontal: 16,
-                                ),
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ListView.builder(
-                          shrinkWrap: true,
-                          physics: const NeverScrollableScrollPhysics(),
-                          itemCount: filteredItems.length,
-                          itemBuilder: (context, index) {
-                            final item = filteredItems[index];
-                            return InkWell(
-                              onTap:
-                                  item.disabled ? null : () => selectItem(item),
-                              child: Container(
-                                color:
-                                    item.disabled
-                                        ? kGreyColor.withAlpha(50)
-                                        : null,
-                                padding: const EdgeInsets.symmetric(
-                                  vertical: 15,
-                                  horizontal: 16,
-                                ),
-                                child: Text(
-                                  '${item.value}',
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    color: kBlackColor,
-                                  ),
-                                ),
-                              ),
-                            );
-                          },
-                        ),
-                      ],
+          const SizedBox(height: 24),
+          if (widget.searchable)
+            TextField(
+              controller: searchController,
+              autofocus: true,
+              onChanged: _filterItems,
+              style: AppTypography.body(context),
+              decoration: InputDecoration(
+                hintText: widget.hint,
+                prefixIcon: const Icon(Icons.search_rounded, size: 22),
+                suffixIcon: searchController.text.isNotEmpty
+                    ? IconButton(
+                        icon: const Icon(Icons.clear_rounded, size: 20),
+                        onPressed: () {
+                          searchController.clear();
+                          _filterItems('');
+                        },
+                      )
+                    : null,
+                contentPadding: const EdgeInsets.symmetric(vertical: 16),
+                filled: true,
+                fillColor: isDark ? kBlackColor : kLightGreyColor,
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(16),
+                  borderSide: BorderSide.none,
+                ),
+              ),
+            ),
+          const SizedBox(height: 20),
+          Flexible(
+            child: ListView.separated(
+              shrinkWrap: true,
+              itemCount: filteredItems.length,
+              separatorBuilder: (context, index) => Divider(
+                height: 1,
+                color: isDark ? Colors.white10 : Colors.black.withOpacity(0.04),
+              ),
+              itemBuilder: (context, index) {
+                final item = filteredItems[index];
+                return ListTile(
+                  onTap: item.disabled
+                      ? null
+                      : () {
+                          widget.onSelect(item);
+                          Navigator.pop(context);
+                        },
+                  contentPadding: const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
+                  title: Text(
+                    item.value ?? '',
+                    style: AppTypography.title(context).copyWith(
+                      color: item.disabled ? (isDark ? Colors.white24 : Colors.black26) : null,
                     ),
-                  )
-                  : null,
-        ),
-      ],
+                  ),
+                  subtitle: item.subtitle != null
+                      ? Text(
+                          item.subtitle!,
+                          style: AppTypography.caption(context).copyWith(
+                            color: item.disabled ? (isDark ? Colors.white10 : Colors.black12) : kGreenColor,
+                          ),
+                        )
+                      : null,
+                  trailing: item.trailing != null
+                      ? Text(
+                          item.trailing!,
+                          style: AppTypography.title(context).copyWith(
+                            fontSize: 14,
+                            color: item.disabled ? (isDark ? Colors.white38 : Colors.black45) : kBluePrimary,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        )
+                      : null,
+                );
+              },
+            ),
+          ),
+          if (filteredItems.isEmpty)
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 40),
+              child: Column(
+                children: [
+                  Icon(Icons.search_off_rounded, size: 48, color: isDark ? Colors.white10 : Colors.black12),
+                  const SizedBox(height: 16),
+                  Text(
+                    "Produk tidak ditemukan",
+                    style: AppTypography.body(context).copyWith(color: kGreyDarkColor),
+                  ),
+                ],
+              ),
+            ),
+        ],
+      ),
     );
   }
 }

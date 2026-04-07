@@ -34,6 +34,15 @@ class UpdateProductPrice extends ProductFormEvent {
   List<Object?> get props => [price];
 }
 
+class UpdateProductPurchasePrice extends ProductFormEvent {
+  final double purchasePrice;
+
+  UpdateProductPurchasePrice(this.purchasePrice);
+
+  @override
+  List<Object?> get props => [purchasePrice];
+}
+
 class UpdateProductAmountPerUnit extends ProductFormEvent {
   final int amountPerUnit;
 
@@ -53,7 +62,7 @@ class UpdateProductUnit extends ProductFormEvent {
 }
 
 class UpdateProductStock extends ProductFormEvent {
-  final int stock;
+  final num stock;
 
   UpdateProductStock(this.stock);
 

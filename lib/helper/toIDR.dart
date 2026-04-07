@@ -1,6 +1,6 @@
 import 'package:intl/intl.dart';
 
-String toIDR(int number) {
+String toIDR(num number) {
   final formatter = NumberFormat.currency(
     locale: 'id_ID',
     symbol: 'Rp ',

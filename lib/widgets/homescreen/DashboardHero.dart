@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:warungpakwardi/widgets/homescreen/DataCard.dart';
+import 'package:warungpakwardi/constant/color.dart';
+import 'package:warungpakwardi/widgets/homescreen/DashboardShimmer.dart'; // import Shimmer
 
 import '../../blocs/home/bloc/home_bloc.dart';
 
@@ -13,24 +15,28 @@ class DashboardHero extends StatelessWidget {
       type: TypeValue.normal,
       assetPath: "assets/product.svg",
       title: "Total Produk",
+      accentColor: kAccentProduct,
     ),
     DataCardModel(
       value: 0,
       type: TypeValue.normal,
       assetPath: "assets/receipt.svg",
-      title: "Transaksi Hari Ini",
+      title: "Trx Hari Ini",
+      accentColor: kAccentTrx,
     ),
     DataCardModel(
       value: 0,
       type: TypeValue.rupiah,
       assetPath: "assets/balance.svg",
-      title: "Pendapatan Hari Ini",
+      title: "Omzet Hari Ini",
+      accentColor: kAccentRevenue,
     ),
     DataCardModel(
       value: 0,
       type: TypeValue.normal,
       assetPath: "assets/alert.svg",
       title: "Stok Menipis",
+      accentColor: kAccentLowStock,
     ),
   ];
 
@@ -52,26 +58,27 @@ class DashboardHero extends StatelessWidget {
           ];
         }
 
+        if (state is FetchDashboardLoadingState) {
+          return const DashboardShimmer();
+        }
+
         return Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: SizedBox(
-            height: MediaQuery.of(context).size.height * 0.38,
-            child: GridView.builder(
-              physics: const NeverScrollableScrollPhysics(),
-              shrinkWrap: true,
-              itemCount: dataCardModels.length,
-              gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-                maxCrossAxisExtent: 200,
-                crossAxisSpacing: 10,
-                mainAxisSpacing: 10,
-                childAspectRatio: 1 / 0.8,
-              ),
-              itemBuilder:
-                  (context, index) => DataCard(
-                    key: ValueKey(index),
-                    data: dataCardModels[index],
-                  ),
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          child: GridView.builder(
+            physics: const NeverScrollableScrollPhysics(),
+            shrinkWrap: true,
+            itemCount: dataCardModels.length,
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              crossAxisSpacing: 14,
+              mainAxisSpacing: 14,
+              childAspectRatio: 1.1,
             ),
+            itemBuilder:
+                (context, index) => DataCard(
+                  key: ValueKey("data_card_$index"),
+                  data: dataCardModels[index],
+                ),
           ),
         );
       },
