@@ -89,11 +89,11 @@ BEGIN
     BEGIN
         BLOCK "040904e4"
         BEGIN
-            VALUE "CompanyName", "com.example" "\0"
-            VALUE "FileDescription", "warungpakwardi" "\0"
+            VALUE "CompanyName", "com.warungdigital" "\0"
+            VALUE "FileDescription", "Warung Digital" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
-            VALUE "InternalName", "warungpakwardi" "\0"
-            VALUE "LegalCopyright", "Copyright (C) 2025 com.example. All rights reserved." "\0"
+            VALUE "InternalName", "warungdigital" "\0"
+            VALUE "LegalCopyright", "Copyright (C) 2025 com.warungdigital. All rights reserved." "\0"
             VALUE "OriginalFilename", "warungpakwardi.exe" "\0"
             VALUE "ProductName", "warungpakwardi" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"

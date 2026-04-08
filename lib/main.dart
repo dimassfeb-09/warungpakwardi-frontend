@@ -99,80 +99,67 @@ class MyApp extends StatelessWidget {
             initialRoute: '/home-screen',
             routes: {
               '/home-screen': (context) => const HomeScreen(),
-              '/product-list-screen':
-                  (context) => MultiBlocProvider(
-                    providers: [
-                      BlocProvider(
-                        create:
-                            (context) =>
-                                ProductBloc()..add(FetchProductEvent()),
-                      ),
-                      BlocProvider(create: (context) => ProductFormBloc()),
-                    ],
-                    child: ProductListScreen(),
+              '/product-list-screen': (context) => MultiBlocProvider(
+                providers: [
+                  BlocProvider(
+                    create: (context) =>
+                        ProductBloc()..add(FetchProductEvent()),
                   ),
-              '/product-add-screen':
-                  (context) => BlocProvider(
-                    create: (_) => ProductFormBloc(),
-                    child: ProductAddScreen(),
-                  ),
+                  BlocProvider(create: (context) => ProductFormBloc()),
+                ],
+                child: ProductListScreen(),
+              ),
+              '/product-add-screen': (context) => BlocProvider(
+                create: (_) => ProductFormBloc(),
+                child: ProductAddScreen(),
+              ),
 
               '/product-edit-screen': (context) {
                 final product =
                     ModalRoute.of(context)!.settings.arguments as Product;
 
                 return BlocProvider(
-                  create:
-                      (_) =>
-                          ProductFormBloc()
-                            ..add(LoadProductForEditEvent(product)),
+                  create: (_) =>
+                      ProductFormBloc()..add(LoadProductForEditEvent(product)),
                   child: ProductEditScreen(),
                 );
               },
 
-              '/transaction-list-screen':
-                  (context) => MultiBlocProvider(
-                    providers: [
-                      BlocProvider(
-                        create:
-                            (context) =>
-                                TransactionBloc()..add(FetchTransactionEvent()),
-                      ),
-                    ],
-                    child: TransactionListScreen(),
+              '/transaction-list-screen': (context) => MultiBlocProvider(
+                providers: [
+                  BlocProvider(
+                    create: (context) =>
+                        TransactionBloc()..add(FetchTransactionEvent()),
                   ),
-              '/transaction-add-screen':
-                  (context) => MultiBlocProvider(
-                    providers: [
-                      BlocProvider(
-                        create:
-                            (context) =>
-                                ProductBloc()..add(FetchProductEvent()),
-                      ),
-                      BlocProvider(create: (_) => TransactionAddBloc()),
-                    ],
-                    child: TransactionAddScreen(),
+                ],
+                child: TransactionListScreen(),
+              ),
+              '/transaction-add-screen': (context) => MultiBlocProvider(
+                providers: [
+                  BlocProvider(
+                    create: (context) =>
+                        ProductBloc()..add(FetchProductEvent()),
                   ),
+                  BlocProvider(create: (_) => TransactionAddBloc()),
+                ],
+                child: TransactionAddScreen(),
+              ),
               '/transaction-detail-screen': (context) {
                 final transactionId =
                     ModalRoute.of(context)!.settings.arguments as String;
                 return BlocProvider(
-                  create:
-                      (_) =>
-                          TransactionDetailBloc()..add(
-                            LoadTransactionDetailEvent(
-                              transactionId: transactionId,
-                            ),
-                          ),
+                  create: (_) => TransactionDetailBloc()
+                    ..add(
+                      LoadTransactionDetailEvent(transactionId: transactionId),
+                    ),
                   child: TransactionDetailScreen(),
                 );
               },
 
-              '/report-screen':
-                  (context) => BlocProvider(
-                    create: (_) => ReportBloc()..add(FetchReportTransaction()),
-                    child: ReportScreen(),
-                  ),
+              '/report-screen': (context) => BlocProvider(
+                create: (_) => ReportBloc()..add(FetchReportTransaction()),
+                child: ReportScreen(),
+              ),
               '/settings-screen': (context) => const SettingsScreen(),
             },
           );
